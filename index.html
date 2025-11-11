@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Felhasználók kezelése</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Felhasználóbejelentkezés ellenőrzése -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const felhasznalo = sessionStorage.getItem("felhasznalo");
+      if (!felhasznalo) {
+        window.location.href = "login.html";
+        return;
+      }
+
+      // Kijelentkezés gomb működése
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        sessionStorage.removeItem("felhasznalo");
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <h2>Felhasználók táblázat</h2>
+
+  <!-- Kijelentkezés gomb -->
+  <div style="text-align:right; margin-bottom:10px;">
+    <button id="logoutBtn" type="button">🚪 Kijelentkezés</button>
+  </div>
+
+  <div id="form-container">
+    <input type="text" id="nev" placeholder="Név" required>
+    <input type="text" id="felhasznalonev" placeholder="Felhasználónév" required>
+    <input type="password" id="jelszo" placeholder="Jelszó" required>
+
+    <select id="jogosultsag" required>
+      <option value="">Válassz jogosultságot...</option>
+      <option value="1">Fogyasztó</option>
+      <option value="2">Raktáros</option>
+      <option value="3">User</option>
+      <option value="4">Admin</option>
+    </select>
+
+    <button id="hozzaad" type="button">➕ Hozzáadás</button>
+  </div>
+
+  <div class="toolbar">
+    <button id="torlesGomb" type="button">🗑 Kijelöltek törlése</button>
+  </div>
+
+  <table id="felhasznalokTabla">
+    <thead>
+      <tr>
+        <th class="check-col"></th>
+        <th>ID</th>
+        <th>Név</th>
+        <th>Felhasználónév</th>
+        <th>Jelszó</th>
+        <th>Jogosultság</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ide tölti be a JS a sorokat -->
+    </tbody>
+  </table>
+
+</body>
+</html>

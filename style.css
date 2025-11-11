@@ -1,0 +1,133 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin: 40px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+#form-container {
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 6px;
+  width: 180px;
+  margin-right: 5px;
+}
+
+button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+  transform: scale(0.96);
+  background-color: #004080;
+}
+
+.toolbar {
+  margin-bottom: 15px;
+}
+
+/* ======= TÁBLÁZAT ======= */
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  width: 85%;              
+  table-layout: fixed;     
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  user-select: none;
+}
+
+thead th,
+tbody td {
+  border: 1px solid #333;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;      
+}
+
+thead th {
+  background-color: #f4f4f4;
+  user-select: none;
+  pointer-events: none;
+}
+
+tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+
+/* 1. oszlop: checkbox */
+.check-col,
+thead th:nth-child(1),
+tbody td:nth-child(1) {
+  width: 40px;
+  text-align: center;
+}
+
+/* 2. oszlop: ID */
+thead th:nth-child(2),
+tbody td:nth-child(2) {
+  width: 80px;
+}
+
+/* 3. oszlop: Név */
+thead th:nth-child(3),
+tbody td:nth-child(3) {
+  width: 22%;
+}
+
+/* 4. oszlop: Felhasználónév */
+thead th:nth-child(4),
+tbody td:nth-child(4) {
+  width: 22%;
+}
+
+/* 5. oszlop: Jelszó */
+thead th:nth-child(5),
+tbody td:nth-child(5) {
+  width: 18%;
+}
+
+/* 6. oszlop: Jogosultság */
+thead th:nth-child(6),
+tbody td:nth-child(6) {
+  width: 26%;
+  min-width: 180px;
+  white-space: normal;      
+  text-overflow: clip;      
+  overflow: visible;
+  word-break: break-word;   
+}
+
+/* ======= Checkbox ======= */
+.row-check {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #007bff;
+}
+
+tbody td:first-child {
+  text-align: center;
+  vertical-align: middle;
+  padding: 6px 0;
+}

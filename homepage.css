@@ -1,0 +1,240 @@
+/* Alapbeállítások */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #000;
+    line-height: 1.6;
+  }
+  
+  /* Felső sáv */
+  .topbar {
+    background-color: #2e7d32;
+    color: #fff;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+  
+  /* Fejléc: logó + menü */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 12px 40px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .logo {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #2e7d32;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .logo:hover {
+    opacity: 0.9;
+  }
+  
+  .main-nav a {
+    margin-left: 18px;
+    padding: 8px 14px;
+    text-decoration: none;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  
+  .main-nav a:hover {
+    background-color: #388e3c;
+    transform: translateY(-1px);
+  }
+  
+  /* Hero: szöveg + kép */
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 40px;
+    background-color: #ffffff;
+  }
+  
+  .hero-text {
+    flex: 1 1 320px;
+  }
+  
+  .hero-text h2 {
+    font-size: 2rem;
+    color: #1b5e20;
+    margin-bottom: 15px;
+  }
+  
+  .hero-text p {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #000;
+  }
+  
+  .hero-text strong {
+    font-weight: bold;
+    color: #2e7d32;
+  }
+  
+  .hero-highlight {
+    font-style: italic;
+    margin-top: 10px;
+  }
+  
+  .hero-image {
+    flex: 1 1 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero-image img {
+    width: 100%;
+    max-width: 850px;       /* még szélesebb kép */
+    height: auto;           /* arányos magasság */
+    object-fit: cover;      /* kitölti, de nem torzít */
+    max-height: 600px;      /* magasabb, de nem túl nagy */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease; /* finom animáció */
+  }
+  
+  .hero-image img:hover {
+    transform: scale(1.03); /* kis kiemelés egérrel */
+  }
+  
+  
+  
+  /* 4 szürke doboz */
+  .services {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    padding: 30px 40px;
+    background-color: #e0e0e0;
+  }
+  
+  .service-box {
+    background-color: #757575;
+    color: #fff;
+    padding: 18px 20px;
+    border-radius: 10px;
+    min-width: 180px;
+    text-align: center;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    transition: background-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+  
+  .service-box:hover {
+    background-color: #2e7d32;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.22);
+  }
+  
+  /* Alsó blokk: kép + szöveg */
+  .investment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 40px;
+    background-color: #ffffff;
+    align-items: center;
+  }
+  
+  .investment-image {
+    flex: 1 1 320px;
+  }
+  
+  .investment-image img {
+    width: 100%;
+    max-width: 850px;        /* egységes méret a hero képpel */
+    height: auto;            /* arányos magasság */
+    object-fit: cover;       /* ne torzuljon, de töltse ki */
+    max-height: 600px;       /* kb. mint a felső kép */
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    transition: transform 0.3s ease;
+  }
+  
+  .investment-image img:hover {
+    transform: scale(1.03);  /* finom kiemelés */
+  }
+  
+  
+  .investment-text {
+    flex: 1 1 320px;
+    background-color: #ffffff; /* kérés szerint fehér */
+    padding: 10px 0;
+    color: #000;
+  }
+  
+  .investment-text h3 {
+    font-size: 1.6rem;
+    color: #1b5e20;
+    margin-bottom: 10px;
+  }
+  
+  .investment-text p {
+    margin-bottom: 8px;
+  }
+  
+  /* Lábléc */
+  .footer {
+    background-color: #2e7d32;
+    color: #fff;
+    text-align: center;
+    padding: 14px 10px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+  
+  /* Mobil nézet */
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  
+    .main-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 4px;
+    }
+  
+    .hero,
+    .investment {
+      flex-direction: column;
+      padding: 20px;
+    }
+  
+    .services {
+      padding: 20px;
+    }
+  
+    .hero-text,
+    .investment-text {
+      text-align: left;
+    }
+  }
+  
