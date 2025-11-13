@@ -1,0 +1,547 @@
+<?php
+// Munkamenet indítása (Legelső!)
+session_start();
+
+// Fejlécek
+header("Access-Control-Allow-Origin: http://localhost"); // Módosítva XAMPP-hoz
+header("Access-Control-Allow-Credentials: true");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// OPTIONS kérés kezelése (CORS preflight)
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// --- OSZTÁLYOK ---
+
+/**
+ * Adatbázis kapcsolatot kezelő osztály
+ */
+class Database {
+    private $host = "127.0.0.1";
+    private $db_name = "napelem_db";
+    private $username = "root";
+    private $password = ""; // XAMPP alapértelmezett
+    public $conn;
+
+    public function getConnection() {
+        $this->conn = null;
+        try {
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
+            $this->conn->exec("set names utf8");
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $exception) {
+            error_log("Kapcsolati hiba: " . $exception->getMessage());
+            return null;
+        }
+        return $this->conn;
+    }
+}
+
+/**
+ * Felhasználó kezelés (Bejelentkezés)
+ */
+class Felhasznalo {
+    private $conn;
+    private $table_name = "felhasznalok";
+    public $id, $felhasznalonev, $szerep;
+
+    public function __construct($db) { $this->conn = $db; }
+
+    public function login($felhasznalonev, $jelszo) {
+        $query = "SELECT id, felhasznalonev, jelszo_hash, szerep FROM " . $this->table_name . " WHERE felhasznalonev = :felhasznalonev LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':felhasznalonev', $felhasznalonev);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (password_verify($jelszo, $row['jelszo_hash'])) {
+                $_SESSION['user_id'] = $row['id'];
+                $_SESSION['felhasznalonev'] = $row['felhasznalonev'];
+                $_SESSION['szerep'] = $row['szerep'];
+                
+                $this->id = $row['id'];
+                $this->felhasznalonev = $row['felhasznalonev'];
+                $this->szerep = $row['szerep'];
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+/**
+ * Alkatrész kezelés (Szakember A.3, Raktárvezető B.1, B.2)
+ */
+class AlkatreszKezelo {
+    private $conn;
+    private $table_name = "alkatreszek";
+    public function __construct($db) { $this->conn = $db; }
+
+    /**
+     * Alkatrészek listázása (Funkció A.3)
+     */
+    public function listaz() {
+        $query = "
+            SELECT 
+                a.id, a.nev, a.ar, a.max_darab_rekeszben,
+                COALESCE(SUM(al.darab), 0) AS raktaron_darab
+            FROM 
+                " . $this->table_name . " AS a
+            LEFT JOIN 
+                alkatresz_lokaciok AS al ON a.id = al.alkatresz_id
+            GROUP BY 
+                a.id, a.nev, a.ar, a.max_darab_rekeszben
+            ORDER BY
+                a.nev
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    /**
+     * Új alkatrész felvétele (Funkció B.1)
+     */
+    public function letrehoz($nev, $ar, $max_darab) {
+        $query = "INSERT INTO " . $this->table_name . " (nev, ar, max_darab_rekeszben) VALUES (:nev, :ar, :max_darab)";
+        $stmt = $this->conn->prepare($query);
+
+        $nev = htmlspecialchars(strip_tags($nev));
+        $ar = (float)$ar;
+        $max_darab = (int)$max_darab;
+
+        $stmt->bindParam(':nev', $nev);
+        $stmt->bindParam(':ar', $ar);
+        $stmt->bindParam(':max_darab', $max_darab);
+
+        if($stmt->execute()){
+            return $this->conn->lastInsertId();
+        }
+        return false;
+    }
+
+    /**
+     * Alkatrész árának módosítása (Funkció B.2)
+     */
+    public function arModosit($id, $ujAr) {
+        $query = "UPDATE " . $this->table_name . " SET ar = :ar WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        
+        $id = (int)$id;
+        $ujAr = (float)$ujAr;
+
+        $stmt->bindParam(':ar', $ujAr);
+        $stmt->bindParam(':id', $id);
+
+        if($stmt->execute()){
+            return $stmt->rowCount() > 0; // Igaz, ha volt módosítás
+        }
+        return false;
+    }
+}
+
+/**
+ * Projekt és Raktár kezelés (Raktáros funkciók C.1, C.2)
+ */
+class RaktarKezelo {
+    private $conn;
+    public function __construct($db) { $this->conn = $db; }
+
+    /**
+     * Raktárosnak releváns projektek listázása (Funkció C.1)
+     */
+    public function kivetereVaroProjektek() {
+        $query = "SELECT id, nev, helyszin, statusz FROM projektek WHERE statusz IN ('Scheduled', 'InProgress') ORDER BY statusz, nev";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    /**
+     * Adott projekthez tartozó alkatrészek és lokációik listázása (Funkció C.2)
+     */
+    public function projektReszletek($projekt_id) {
+        $query = "
+            SELECT 
+                a.id AS alkatresz_id,
+                a.nev AS alkatresz_nev,
+                pa.szukseges_darab,
+                r.sor,
+                r.oszlop,
+                r.szint,
+                r.egyedi_azonosito,
+                al.darab AS keszlet_adott_rekeszben
+            FROM 
+                projekt_alkatreszek AS pa
+            JOIN 
+                alkatreszek AS a ON pa.alkatresz_id = a.id
+            LEFT JOIN 
+                alkatresz_lokaciok AS al ON a.id = al.alkatresz_id
+            LEFT JOIN 
+                rekeszek AS r ON al.rekesz_id = r.id
+            WHERE 
+                pa.projekt_id = :projekt_id
+            ORDER BY
+                a.nev, r.sor, r.oszlop, r.szint
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':projekt_id', $projekt_id);
+        $stmt->execute();
+        return $stmt;
+    }
+}
+
+/**
+ * Projekt Kezelés (Szakember funkciók A.1, A.2, A.4, A.7)
+ */
+class ProjektKezelo {
+    private $conn;
+    private $table_name = "projektek";
+    public function __construct($db) { $this->conn = $db; }
+
+    /**
+     * Új projekt létrehozása (Funkció A.1)
+     */
+    public function letrehoz($nev, $helyszin, $leiras, $megrendelo_adatok) {
+        $query = "INSERT INTO " . $this->table_name . " (nev, helyszin, leiras, megrendelo_adatok, statusz) VALUES (:nev, :helyszin, :leiras, :megrendelo, 'New')";
+        $stmt = $this->conn->prepare($query);
+
+        $nev = htmlspecialchars(strip_tags($nev));
+        $helyszin = htmlspecialchars(strip_tags($helyszin));
+        $leiras = htmlspecialchars(strip_tags($leiras));
+        $megrendelo_adatok = htmlspecialchars(strip_tags($megrendelo_adatok));
+
+        $stmt->bindParam(':nev', $nev);
+        $stmt->bindParam(':helyszin', $helyszin);
+        $stmt->bindParam(':leiras', $leiras);
+        $stmt->bindParam(':megrendelo', $megrendelo_adatok);
+
+        if($stmt->execute()){
+            return $this->conn->lastInsertId();
+        }
+        return false;
+    }
+
+    /**
+     * Projektek listázása (Funkció A.2)
+     */
+    public function listaz() {
+        $query = "SELECT id, nev, helyszin, leiras, megrendelo_adatok, statusz FROM " . $this->table_name . " ORDER BY id DESC";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    /**
+     * Projekt státuszának módosítása (Funkció A.7, C.1)
+     */
+    public function statuszModosit($id, $ujStatusz) {
+        // Ellenőrizzük, hogy érvényes-e a státusz
+        $allowedStatus = ['New', 'Draft', 'Wait', 'Scheduled', 'InProgress', 'Completed', 'Failed'];
+        if (!in_array($ujStatusz, $allowedStatus)) {
+            return false;
+        }
+
+        $query = "UPDATE " . $this->table_name . " SET statusz = :statusz WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        
+        $id = (int)$id;
+        $stmt->bindParam(':statusz', $ujStatusz);
+        $stmt->bindParam(':id', $id);
+
+        if($stmt->execute()){
+            return $stmt->rowCount() > 0;
+        }
+        return false;
+    }
+}
+
+/**
+ * ÚJ: Projekt-Alkatrész Kezelés (Szakember A.4)
+ */
+class ProjektAlkatreszKezelo {
+    private $conn;
+    private $table_name = "projekt_alkatreszek";
+    public function __construct($db) { $this->conn = $db; }
+
+    /**
+     * Alkatrész hozzáadása projekthez (Funkció A.4)
+     */
+    public function hozzaad($projekt_id, $alkatresz_id, $darab) {
+        // Ellenőrzés: Létezik már ez a párosítás?
+        $checkQuery = "SELECT id FROM " . $this->table_name . " WHERE projekt_id = :pid AND alkatresz_id = :aid";
+        $checkStmt = $this->conn->prepare($checkQuery);
+        $checkStmt->bindParam(':pid', $projekt_id);
+        $checkStmt->bindParam(':aid', $alkatresz_id);
+        $checkStmt->execute();
+
+        if ($checkStmt->rowCount() > 0) {
+            // Igen: UPDATE
+            $query = "UPDATE " . $this->table_name . " SET szukseges_darab = :darab WHERE projekt_id = :pid AND alkatresz_id = :aid";
+        } else {
+            // Nem: INSERT
+            $query = "INSERT INTO " . $this->table_name . " (projekt_id, alkatresz_id, szukseges_darab) VALUES (:pid, :aid, :darab)";
+        }
+        
+        $stmt = $this->conn->prepare($query);
+
+        $projekt_id = (int)$projekt_id;
+        $alkatresz_id = (int)$alkatresz_id;
+        $darab = (int)$darab;
+
+        $stmt->bindParam(':pid', $projekt_id);
+        $stmt->bindParam(':aid', $alkatresz_id);
+        $stmt->bindParam(':darab', $darab);
+
+        return $stmt->execute();
+    }
+
+    /**
+     * Projekt alkatrészeinek listázása (A.4 segédfüggvény)
+     */
+    public function projektAlkatreszek($projekt_id) {
+        $query = "
+            SELECT a.nev, pa.szukseges_darab
+            FROM " . $this->table_name . " AS pa
+            JOIN alkatreszek AS a ON pa.alkatresz_id = a.id
+            WHERE pa.projekt_id = :projekt_id
+            ORDER BY a.nev
+        ";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':projekt_id', $projekt_id);
+        $stmt->execute();
+        return $stmt;
+    }
+}
+
+
+// --- AUTHENTIKÁCIÓS SEGÉDFÜGGVÉNYEK ---
+
+function checkAuth() {
+    if (!isset($_SESSION['user_id'])) {
+        http_response_code(401); // Unauthorized
+        echo json_encode(["uzenet" => "Nincs bejelentkezve. A hozzáférés megtagadva."]);
+        exit();
+    }
+}
+
+function checkRole($allowed_roles = []) {
+    checkAuth(); // Először megnézzük, be van-e lépve
+    if (!in_array($_SESSION['szerep'], $allowed_roles)) {
+        http_response_code(403); // Forbidden
+        echo json_encode(["uzenet" => "Nincs jogosultsága ehhez a művelethez. (Szerep: " . $_SESSION['szerep'] . ", Szükséges: " . implode(', ', $allowed_roles) . ")"]);
+        exit();
+    }
+}
+
+// --- API "ROUTER" ---
+
+$database = new Database();
+$db = $database->getConnection();
+
+if (!$db) {
+    http_response_code(503); // Service Unavailable
+    echo json_encode(["uzenet" => "Adatbázis kapcsolati hiba."]);
+    exit();
+}
+
+$data = json_decode(file_get_contents("php://input"));
+$method = $_SERVER['REQUEST_METHOD'];
+
+// TISZTÁBB ÚTVONALKEZELÉS (ROUTER)
+$uri = $_SERVER['REQUEST_URI'];
+$path = parse_url($uri, PHP_URL_PATH);
+
+// Mivel XAMPP-ban futtatjuk (pl. /napelem_projekt/api.php/login)
+// meg kell találnunk az "api.php" szegmenst
+$parts = explode('/', $path);
+$api_index = array_search('api.php', $parts); // Megkeressük az 'api.php'-t
+
+if ($api_index === false) {
+    http_response_code(404);
+    echo json_encode(["uzenet" => "API végpont nem található. Az 'api.php' hiányzik az URL-ből."]);
+    exit();
+}
+
+$endpoint = $parts[$api_index + 1] ?? null; // Az 'api.php' utáni rész
+$id = $parts[$api_index + 2] ?? null;       // Az 'endpoint' utáni rész (ID)
+
+if ($endpoint === null) {
+    http_response_code(200);
+    echo json_encode(["uzenet" => "Napelem API fut. Állapot: " . (isset($_SESSION['user_id']) ? "Bejelentkezve" : "Nincs bejelentkezve")]);
+    exit();
+}
+
+switch ($endpoint) {
+    case 'login':
+        if ($method == 'POST') {
+            $felhasznalo = new Felhasznalo($db);
+            if (!empty($data->felhasznalonev) && !empty($data->jelszo) && $felhasznalo->login($data->felhasznalonev, $data->jelszo)) {
+                http_response_code(200);
+                echo json_encode(["uzenet" => "Sikeres bejelentkezés.", "felhasznalo" => ["id" => $felhasznalo->id, "felhasznalonev" => $felhasznalo->felhasznalonev, "szerep" => $felhasznalo->szerep]]);
+            } else {
+                http_response_code(401); echo json_encode(["uzenet" => "Hibás felhasználónév vagy jelszó."]);
+            }
+        }
+        break;
+
+    case 'logout':
+        if ($method == 'POST') {
+            session_unset(); session_destroy();
+            http_response_code(200); echo json_encode(["uzenet" => "Sikeres kijelentkezés."]);
+        }
+        break;
+
+    case 'alkatreszek':
+        $alkatreszKezelo = new AlkatreszKezelo($db);
+        
+        if ($method == 'GET' && empty($id)) {
+            // Funkció A.3. [1] - Lista
+            checkRole(['Szakember', 'Admin', 'Raktarvezeto']);
+            $stmt = $alkatreszKezelo->listaz();
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            http_response_code(200);
+            echo json_encode(["adatok" => $items]);
+        }
+        else if ($method == 'POST' && empty($id)) {
+            // Funkció B.1. [1] - Új alkatrész
+            checkRole(['Raktarvezeto', 'Admin']);
+            if (!empty($data->nev) && isset($data->ar) && !empty($data->max_darab)) {
+                $ujId = $alkatreszKezelo->letrehoz($data->nev, $data->ar, $data->max_darab);
+                if ($ujId) {
+                    http_response_code(201); // Created
+                    echo json_encode(["uzenet" => "Alkatrész sikeresen létrehozva.", "id" => $ujId]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["uzenet" => "Hiba az alkatrész létrehozása során."]);
+                }
+            } else {
+                http_response_code(400); // Bad Request
+                echo json_encode(["uzenet" => "Hiányzó adatok (név, ár, max_darab)."]);
+            }
+        }
+        else if ($method == 'PUT' && !empty($id)) {
+            // Funkció B.2. [1] - Ár módosítása
+            checkRole(['Raktarvezeto', 'Admin']);
+            if (isset($data->ar)) {
+                if ($alkatreszKezelo->arModosit($id, $data->ar)) {
+                    http_response_code(200);
+                    echo json_encode(["uzenet" => "Ár sikeresen módosítva."]);
+                } else {
+                     http_response_code(500);
+                    echo json_encode(["uzenet" => "Hiba az ár módosítása során (vagy nem változott)."]);
+                }
+            } else {
+                 http_response_code(400); // Bad Request
+                 echo json_encode(["uzenet" => "Hiányzó 'ar' adat."]);
+            }
+        }
+        break;
+
+    case 'projektek':
+        $projektKezelo = new ProjektKezelo($db);
+        
+        if ($method == 'GET' && empty($id)) {
+            // Funkció A.2. [1] - Projektek listázása
+            checkRole(['Szakember', 'Admin']);
+            $stmt = $projektKezelo->listaz();
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            http_response_code(200);
+            echo json_encode(["adatok" => $items]);
+        }
+        else if ($method == 'POST' && empty($id)) {
+            // Funkció A.1. [1] - Új projekt
+            checkRole(['Szakember', 'Admin']);
+             if (!empty($data->nev) && !empty($data->helyszin)) {
+                $ujId = $projektKezelo->letrehoz($data->nev, $data->helyszin, $data->leiras ?? '', $data->megrendelo_adatok ?? '');
+                if ($ujId) {
+                    http_response_code(201); // Created
+                    echo json_encode(["uzenet" => "Projekt sikeresen létrehozva.", "id" => $ujId]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["uzenet" => "Hiba a projekt létrehozása során."]);
+                }
+             } else {
+                 http_response_code(400); // Bad Request
+                 echo json_encode(["uzenet" => "Hiányzó adatok (legalább név és helyszín)."]);
+             }
+        }
+        // Itt lenne a PUT /projektek/{id} (A.5, A.7)
+        break;
+
+    case 'projekt_alkatresz':
+        // Funkció A.4. [1] - Alkatrészek kezelése projekten
+        checkRole(['Szakember', 'Admin']);
+        $paKezelo = new ProjektAlkatreszKezelo($db);
+
+        if ($method == 'GET' && !empty($id)) {
+            // Projekthez rendelt alkatrészek listázása (A.4 segéd)
+            $stmt = $paKezelo->projektAlkatreszek($id);
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            http_response_code(200);
+            echo json_encode(["adatok" => $items]);
+        }
+        else if ($method == 'POST' && !empty($id)) {
+            // Alkatrész hozzáadása projekthez (A.4)
+            if (isset($data->alkatresz_id) && isset($data->darab)) {
+                if ($paKezelo->hozzaad($id, $data->alkatresz_id, $data->darab)) {
+                    // Státusz beállítása 'Draft'-ra (A.4)
+                    $projektKezelo = new ProjektKezelo($db);
+                    $projektKezelo->statuszModosit($id, 'Draft');
+                    
+                    http_response_code(201);
+                    echo json_encode(["uzenet" => "Alkatrész sikeresen hozzáadva/módosítva a projekthez."]);
+                } else {
+                    http_response_code(500);
+                    echo json_encode(["uzenet" => "Hiba az alkatrész hozzáadása során."]);
+                }
+            } else {
+                 http_response_code(400);
+                 echo json_encode(["uzenet" => "Hiányzó alkatresz_id vagy darab."]);
+            }
+        }
+        break;
+
+    case 'projektek_kivetelre':
+        // Funkció C.1. [1]
+        checkRole(['Raktaros', 'Admin']);
+        if ($method == 'GET') {
+            $raktar = new RaktarKezelo($db);
+            $stmt = $raktar->kivetereVaroProjektek();
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            http_response_code(200);
+            echo json_encode(["adatok" => $items]);
+        }
+        break;
+
+    case 'projekt_reszletek':
+        // Funkció C.2. [1]
+        checkRole(['Raktaros', 'Admin']);
+        if ($method == 'GET' && !empty($id) && is_numeric($id)) {
+            // C.1 Rész: Státusz automatikus beállítása 'InProgress'-re
+            $projektKezelo = new ProjektKezelo($db);
+            $projektKezelo->statuszModosit($id, 'InProgress');
+            
+            // C.2: Részletek lekérése
+            $raktar = new RaktarKezelo($db);
+            $stmt = $raktar->projektReszletek($id); // $id a projekt_id
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            http_response_code(200);
+            echo json_encode(["adatok" => $items]);
+        } else {
+            http_response_code(400); // Bad Request
+            echo json_encode(["uzenet" => "Érvénytelen vagy hiányzó projekt ID."]);
+        }
+        break;
+
+    default:
+        http_response_code(404);
+        echo json_encode(["uzenet" => "A végpont nem található.", "keresett" => $endpoint]);
+        break;
+}
+?>
