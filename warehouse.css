@@ -1,0 +1,313 @@
+/* ==========================
+   ALAP
+========================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================
+   FEJLÉC
+========================== */
+
+.top-header {
+    background: #008000;
+    color: white;
+    text-align: center;
+    padding: 6px 0;
+}
+
+.contact-info span {
+    margin: 0 12px;
+}
+
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 40px;
+    background: white;
+}
+
+.logo a {
+    color: #008000;
+    font-size: 2rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.menu {
+    display: flex;
+    gap: 12px;
+}
+
+.menu a {
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: #008000;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu a:hover {
+    background: #006600;
+}
+
+.menu .admin-btn {
+    background: #0044aa;
+}
+
+.menu .logout-btn {
+    background: #cc0000;
+}
+
+.menu a.active {
+    color: #ffd700; /* citromsárga szöveg */
+}
+
+/* ==========================
+   ELRENDEZÉS
+========================== */
+
+main {
+    padding: 20px;
+    flex: 1;
+}
+
+.layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* ==========================
+   BAL OLDALI MENÜ + RENDELÉSEK
+========================== */
+
+.left-menu {
+    width: 380px;                   /* szélesebb, hogy a státusz kiférjen */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.left-menu button {
+    padding: 10px 12px;
+    background-color: #008000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.left-menu button:hover {
+    background-color: #006600;
+}
+
+/* Fogyasztói rendelések címsor */
+
+.orders-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;              /* vastagon szedve */
+}
+
+.new-order-count {
+    color: red;                     /* piros szám */
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+/* Rendelések listája */
+
+.orders-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;                      /* távolság a rendelések között */
+    margin-top: 4px;
+}
+
+.order-item {
+    background: #ffffff;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;                      /* kisebb rés a mezők között */
+
+    font-size: 0.9rem;
+}
+
+/* név, dátum, státusz egy sorban, de mind látszódjon */
+.order-name {
+    flex: 1 1 auto;
+}
+
+.order-date {
+    flex: 0 0 auto;
+}
+
+.order-status {
+    flex: 0 0 auto;
+}
+
+/* Új rendelés félkövér */
+
+.order-item.new {
+    font-weight: bold;
+}
+
+.order-item:hover {
+    background: #f0f0f0;
+}
+
+/* ==========================
+   JOBB OLDAL – TÁBLÁZAT
+========================== */
+
+.content {
+    flex: 1;
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 8px;
+    box-shadow: 0 0 6px rgba(0,0,0,0.1);
+}
+
+.content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.table-wrapper {
+    width: 800px;        /* kisebb, mint a korábbi 1000px */
+    margin: 0 auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+thead th,
+tbody td {
+    border: 1px solid #333;
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+thead th {
+    background-color: #f4f4f4;
+}
+
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* ==========================
+   MODAL
+========================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 20px 22px;
+    border-radius: 8px;
+    width: 320px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.modal-content label {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+}
+
+.modal-content select,
+.modal-content input {
+    width: 100%;
+    padding: 6px 8px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    border: 1px solid #aaa;
+}
+
+.modal-buttons {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+#orderCancel {
+    background: #777;
+    color: #fff;
+}
+
+#orderOk {
+    background: #008000;
+    color: #fff;
+}
+
+#orderCancel:hover {
+    background: #555;
+}
+
+#orderOk:hover {
+    background: #006600;
+}
+
+/* ==========================
+   LÁBLÉC
+========================== */
+
+footer {
+    text-align: center;
+    background-color: #008000;
+    color: white;
+    padding: 8px 0;
+    margin-top: auto;   /* mindig az oldal alján legyen */
+}

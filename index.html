@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Felhasználók kezelése</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
-  <!-- Felhasználóbejelentkezés ellenőrzése -->
+  <!-- Bejelentkezés ellenőrzése -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const felhasznalo = sessionStorage.getItem("felhasznalo");
@@ -16,28 +16,49 @@
       }
 
       // Kijelentkezés gomb működése
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        sessionStorage.removeItem("felhasznalo");
-        window.location.href = "login.html";
-      });
+      const logoutBtn = document.getElementById("logoutBtn");
+      if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+          sessionStorage.removeItem("felhasznalo");
+          window.location.href = "login.html";
+        });
+      }
     });
   </script>
 
   <script src="script.js" defer></script>
 </head>
-<body>
 
+<body>
+  <!-- 🔹 FEJLÉC -->
+  <header>
+    <div class="header-top">
+      <p>Cím: ——— | Email: ———</p>
+    </div>
+
+    <div class="header-main">
+      <div class="logo">
+        <a href="homepage.html">Green Solar</a>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="product.html">Termékek</a></li>
+          <li><a href="services.html">Szolgáltatások</a></li>
+          <li><a href="index.html" class="active">Admin</a></li>
+          <li><button id="logoutBtn" class="logout-btn">Kijelentkezés</button></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- 🔹 CÍM -->
   <h2>Felhasználók táblázat</h2>
 
-  <!-- Kijelentkezés gomb -->
-  <div style="text-align:right; margin-bottom:10px;">
-    <button id="logoutBtn" type="button">🚪 Kijelentkezés</button>
-  </div>
-
+  <!-- 🔹 Új felhasználó hozzáadása -->
   <div id="form-container">
-    <input type="text" id="nev" placeholder="Név" required>
-    <input type="text" id="felhasznalonev" placeholder="Felhasználónév" required>
-    <input type="password" id="jelszo" placeholder="Jelszó" required>
+    <input type="text" id="nev" placeholder="Név" required />
+    <input type="text" id="felhasznalonev" placeholder="Felhasználónév" required />
+    <input type="password" id="jelszo" placeholder="Jelszó" required />
 
     <select id="jogosultsag" required>
       <option value="">Válassz jogosultságot...</option>
@@ -50,10 +71,13 @@
     <button id="hozzaad" type="button">➕ Hozzáadás</button>
   </div>
 
+  <!-- 🔹 Eszköztár -->
   <div class="toolbar">
+    <button id="modositasGomb" type="button">✏️ Módosítás</button>
     <button id="torlesGomb" type="button">🗑 Kijelöltek törlése</button>
   </div>
 
+  <!-- 🔹 Táblázat -->
   <table id="felhasznalokTabla">
     <thead>
       <tr>
@@ -62,13 +86,17 @@
         <th>Név</th>
         <th>Felhasználónév</th>
         <th>Jelszó</th>
-        <th>Jogosultság</th> 
+        <th>Jogosultság</th>
       </tr>
     </thead>
     <tbody>
-      <!-- ide tölti be a JS a sorokat -->
+      <!-- ide tölti be a JS -->
     </tbody>
   </table>
 
+  <!-- 🔹 LÁBLÉC -->
+  <footer>
+    <p>© 2025 Green Solar – Minden jog fenntartva</p>
+  </footer>
 </body>
 </html>

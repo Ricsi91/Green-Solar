@@ -47,8 +47,8 @@ button:active {
 table {
   border-collapse: collapse;
   margin: 20px auto;
-  width: 85%;              
-  table-layout: fixed;     
+  width: 85%;
+  table-layout: fixed;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   user-select: none;
 }
@@ -61,7 +61,7 @@ tbody td {
   vertical-align: middle;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;      
+  white-space: nowrap;
 }
 
 thead th {
@@ -73,7 +73,6 @@ thead th {
 tbody tr:hover {
   background-color: #f9f9f9;
 }
-
 
 /* 1. oszlop: checkbox */
 .check-col,
@@ -112,10 +111,10 @@ thead th:nth-child(6),
 tbody td:nth-child(6) {
   width: 26%;
   min-width: 180px;
-  white-space: normal;      
-  text-overflow: clip;      
+  white-space: normal;
+  text-overflow: clip;
   overflow: visible;
-  word-break: break-word;   
+  word-break: break-word;
 }
 
 /* ======= Checkbox ======= */
@@ -130,4 +129,79 @@ tbody td:first-child {
   text-align: center;
   vertical-align: middle;
   padding: 6px 0;
+}
+
+/* ===== FEJLÉC ===== */
+header {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.header-top {
+  background-color: #008000; /* zöld */
+  color: #fff;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 0.9rem;
+}
+
+.header-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px 40px;
+}
+
+.logo a {
+  color: #008000;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ===== NAVIGÁCIÓ ===== */
+nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;  /* 👉 minden elem egy vonalba */
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a,
+nav button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;              /* 👉 egységes magasság */
+  line-height: 38px;
+  background-color: #008000;
+  color: white;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+nav a:hover,
+nav button:hover {
+  background-color: #006600;
+}
+
+nav a.active {
+  color: #ffd700; /* citromsárga: az aktuális oldal */
+}
+
+/* ===== LÁBLÉC ===== */
+footer {
+  text-align: center;
+  background-color: #008000;
+  color: white;
+  padding: 8px 0;
+  margin-top: 40px;
 }
