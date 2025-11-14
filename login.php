@@ -1,0 +1,48 @@
+<!DOCTYPE html>\n<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bejelentkezés</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script_login.js" defer></script>
+
+  <style>
+    /* a fennálló inline stílusokat megtartottam */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 20px; color: #333; }
+    input { width: 100%; padding: 8px; margin: 6px 0; border: 1px solid #ccc; border-radius: 4px; }
+    button { width: 100%; padding: 8px; background: #007bff; color: white; border: none; border-radius: 4px; cursor:pointer;}
+    button:hover { background: #0056b3; }
+    .hiba { color: red; margin-top: 10px; font-size: 14px; }
+    .reglink { margin-top: 12px; display: block; color: #007bff; text-decoration: none; cursor: pointer; font-size: 14px;}
+    .reglink:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Bejelentkezés</h2>
+    <input type="text" id="felhasznalonev" placeholder="Felhasználónév" required>
+    <input type="password" id="jelszo" placeholder="Jelszó" required>
+    <button id="loginBtn">Bejelentkezés</button>
+    <a href="register_page.php" class="reglink">Regisztráció</a>
+    <div id="hibaUzenet" class="hiba"></div>
+  </div>
+
+</body>
+</html>
