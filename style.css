@@ -1,25 +1,160 @@
+/* ===== ALAP ===== */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background-color: #fff;
-  margin: 40px;
+  background-color: #f5f5f5;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* lábléc a lap alján marad */
+}
+
+/* ===== FELSŐ ZÖLD SÁV ===== */
+.top-header {
+  background-color: #008000;
+  color: #fff;
   text-align: center;
+  padding: 6px 0;
+  font-size: 0.9rem;
+}
+.contact-info span {
+  margin: 0 12px;
+}
+
+/* ===== FŐ FEJLÉC (LOGÓ + MENÜ) ===== */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px 40px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.logo a {
+  color: #008000;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ===== MENÜ + DOLGOZÓK LENYÍLÓ ===== */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Alap gomb-stílus (linkek + Dolgozók gomb) */
+.main-nav a,
+.main-nav .dropbtn {
+  margin-left: 15px;
+  padding: 8px 14px;
+  text-decoration: none;
+  background-color: #008000;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Hover */
+.main-nav a:hover,
+.main-nav .dropbtn:hover {
+  background-color: #006600;
+  transform: translateY(-1px);
+}
+
+/* Aktív elem a lenyílóban */
+.dropdown-content a.active {
+  font-weight: bold;
+  color: #0044aa;
+}
+
+/* Logout külön színnel */
+.main-nav .logout-btn {
+  background-color: #cc0000;
+}
+.main-nav .logout-btn:hover {
+  background-color: #aa0000;
+}
+
+/* Dropdown konténer */
+.dropdown {
+  position: relative;
+}
+
+/* Lenyíló tartalom */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 6px 0;
+  z-index: 1500;
+}
+
+/* Lenyíló linkek – soronként */
+.dropdown-content a {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #008000;
+  text-align: left;
+  border-radius: 0;
+}
+
+/* Hover a lenyílóban */
+.dropdown-content a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hoverre nyíljon le */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ===== OLDAL TARTALOM ===== */
+.page-main {
+  padding: 20px 40px 40px;
+  text-align: center;
+  flex: 1; /* kitölti a maradék helyet, hogy a footer lekerüljön alulra */
 }
 
 h2 {
-  margin-bottom: 20px;
+  margin: 10px 0 20px;
 }
 
+/* ===== FORM ===== */
 #form-container {
   margin-bottom: 20px;
 }
 
-input {
+#form-container input,
+#form-container select {
   padding: 6px;
   width: 180px;
   margin-right: 5px;
 }
 
-button {
+/* Alap gomb stílus formhoz / toolbarhoz */
+#form-container button,
+.toolbar button {
   padding: 6px 12px;
   border: none;
   background-color: #007bff;
@@ -29,21 +164,24 @@ button {
   transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
 }
 
-button:hover {
+#form-container button:hover,
+.toolbar button:hover {
   background-color: #0056b3;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
-button:active {
+#form-container button:active,
+.toolbar button:active {
   transform: scale(0.96);
   background-color: #004080;
 }
 
+/* ===== TOOLBAR ===== */
 .toolbar {
   margin-bottom: 15px;
 }
 
-/* ======= TÁBLÁZAT ======= */
+/* ===== TÁBLÁZAT ===== */
 table {
   border-collapse: collapse;
   margin: 20px auto;
@@ -51,6 +189,7 @@ table {
   table-layout: fixed;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   user-select: none;
+  background-color: #fff;
 }
 
 thead th,
@@ -117,7 +256,7 @@ tbody td:nth-child(6) {
   word-break: break-word;
 }
 
-/* ======= Checkbox ======= */
+/* ===== Checkbox ===== */
 .row-check {
   width: 18px;
   height: 18px;
@@ -131,77 +270,34 @@ tbody td:first-child {
   padding: 6px 0;
 }
 
-/* ===== FEJLÉC ===== */
-header {
-  width: 100%;
-  margin-bottom: 30px;
-}
-
-.header-top {
-  background-color: #008000; /* zöld */
-  color: #fff;
-  text-align: center;
-  padding: 6px 0;
-  font-size: 0.9rem;
-}
-
-.header-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #fff;
-  padding: 10px 40px;
-}
-
-.logo a {
-  color: #008000;
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-/* ===== NAVIGÁCIÓ ===== */
-nav ul {
-  list-style: none;
-  display: flex;
-  align-items: center;  /* 👉 minden elem egy vonalba */
-  gap: 15px;
-  margin: 0;
-  padding: 0;
-}
-
-nav a,
-nav button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 38px;              /* 👉 egységes magasság */
-  line-height: 38px;
-  background-color: #008000;
-  color: white;
-  padding: 0 16px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  font-family: inherit;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-nav a:hover,
-nav button:hover {
-  background-color: #006600;
-}
-
-nav a.active {
-  color: #ffd700; /* citromsárga: az aktuális oldal */
-}
-
 /* ===== LÁBLÉC ===== */
 footer {
   text-align: center;
   background-color: #008000;
   color: white;
   padding: 8px 0;
-  margin-top: 40px;
+  margin-top: 0;
+}
+
+/* ===== MOBIL ===== */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .main-nav {
+    margin-top: 4px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  .page-main {
+    padding: 15px 10px 30px;
+  }
 }

@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const felhasznalonev = document.getElementById("felhasznalonev").value.trim();
     const jelszo = document.getElementById("jelszo").value.trim();
 
+    // előző hibaüzenet törlése
+    hiba.textContent = "";
+
     if (!felhasznalonev || !jelszo) {
       hiba.textContent = "Minden mezőt ki kell tölteni!";
       return;
@@ -21,17 +24,35 @@ document.addEventListener("DOMContentLoaded", () => {
       body: formData,
     })
       .then(async (res) => {
+        const text = await res.text();
+
         if (!res.ok) {
-          const text = await res.text();
-          throw new Error("Szerverhiba: " + text);
+          // ha nem 200, próbáljuk kiírni a nyers választ
+          console.error("Szerverhiba válasz:", text);
+          throw new Error("Szerverhiba: " + res.status);
         }
-        return res.json();
+
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.error("Nem sikerült JSON-né alakítani a választ:", text);
+          throw new Error("Érvénytelen JSON válasz az auth.php-től");
+        }
+
+        return data;
       })
       .then((data) => {
         console.log("Login válasz:", data);
 
-        if (data.status === "ok") {
+        // auth.php sikeres válasz: { status: "ok", user: {...} }
+        if (data.status === "ok" && data.user) {
+          // 🔹 user objektum elmentése – EZT fogja használni az auth.js
+          sessionStorage.setItem("user", JSON.stringify(data.user));
+
+          // Ha máshol még a 'felhasznalo' kulcsra hivatkozol, maradhat ez is:
           sessionStorage.setItem("felhasznalo", JSON.stringify(data.user));
+
           // 🔹 Sikeres bejelentkezés után a homepage-re visz
           window.location.href = "homepage.html";
         } else {

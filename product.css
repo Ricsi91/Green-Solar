@@ -1,158 +1,244 @@
 /* ===== ALAPOK ===== */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-  }
-  
-  /* ===== FELSŐ FEJLÉC ===== */
-  .top-bar {
-    background-color: #27ae60;
-    color: white;
-    text-align: center;
-    padding: 8px 0;
-    font-size: 0.95rem;
-    letter-spacing: 0.5px;
-  }
-  
-  /* ===== ALSÓ FEJLÉC ===== */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* ===== FELSŐ FEJLÉC ===== */
+.top-bar {
+  background-color: #27ae60;
+  color: white;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+}
+
+/* ===== ALSÓ FEJLÉC ===== */
+.main-header {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  color: #27ae60;
+  font-size: 1.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logo:hover {
+  color: #1e8449;
+}
+
+/* ===== MENÜ + LEGÖRDÜLŐ ===== */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Alap gomb-stílus (linkek + Dolgozók gomb) */
+.main-nav a,
+.main-nav .dropbtn {
+  margin-left: 15px;
+  padding: 10px 18px;
+  text-decoration: none;
+  background-color: #27ae60; /* zöld háttér */
+  color: white;              /* fehér szöveg */
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Linkek */
+.main-nav a {
+  border: none;
+}
+
+/* Dolgozók gomb (legördülő nyitó) */
+.main-nav .dropbtn {
+  border: none;
+  cursor: pointer;
+}
+
+/* Hover */
+.main-nav a:hover,
+.main-nav .dropbtn:hover {
+  background-color: #1e8449;
+}
+
+/* Logout gomb külön színnel */
+.main-nav .logout-btn {
+  background-color: #cc0000;
+}
+.main-nav .logout-btn:hover {
+  background-color: #aa0000;
+}
+
+/* Dropdown konténer */
+.dropdown {
+  position: relative;
+}
+
+/* Lenyíló tartalom */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 6px 0;
+  z-index: 1500;
+}
+
+/* Dropdown linkek */
+.dropdown-content a {
+  display: block;             
+  width: 100%;
+  margin: 0;                  
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #008000;             
+  text-align: left;
+  border-radius: 0;
+}
+/* Hover a lenyílóban */
+.dropdown-content a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hoverre nyíljon le */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ===== TERMÉK SZEKCIÓ ===== */
+.products-section {
+  text-align: center;
+  padding: 60px 40px;
+  background-color: #f5f5f5;
+}
+
+.products-section h1 {
+  margin-bottom: 40px;
+  color: #333;
+  font-size: 2rem;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  width: 260px;
+  padding: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.product-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.product-card h2 {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+  min-height: 50px;
+}
+
+.price {
+  color: #27ae60;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.details,
+.cart {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.details {
+  background: white;
+  border: 1px solid #333;
+}
+
+.cart {
+  background: #f1c40f;
+  color: #000;
+}
+
+.details:hover {
+  background: #f0f0f0;
+}
+
+.cart:hover {
+  background: #d4ac0d;
+}
+
+/* ===== LÁBLÉC ===== */
+.footer {
+  background-color: #27ae60;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  margin-top: 40px;
+  font-size: 0.9rem;
+}
+
+/* ===== MOBIL / KISEBB NÉZET ===== */
+@media (max-width: 768px) {
   .main-header {
-    background-color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
-  
-  .logo {
-    color: #27ae60;
-    font-size: 1.8rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .logo:hover {
-    color: #1e8449;
-  }
-  
-  .navbar a {
-    text-decoration: none;
-    margin-left: 15px;
-    padding: 10px 18px;
-    border-radius: 6px;
-    background-color: #27ae60; /* zöld háttér */
-    color: white; /* fehér szöveg */
-    font-weight: 500;
-    transition: 0.3s;
-  }
-  
-  .navbar a:hover {
-    background-color: #1e8449;
-  }
-  
-  .navbar a.active {
-    color: #f1c40f; /* citromsárga betű */
-    background-color: #27ae60; /* marad zöld háttér */
-    font-weight: bold;
-  }
-  
-  /* ===== TERMÉK SZEKCIÓ ===== */
-  .products-section {
-    text-align: center;
-    padding: 60px 40px;
-    background-color: #f5f5f5;
-  }
-  
-  .products-section h1 {
-    margin-bottom: 40px;
-    color: #333;
-    font-size: 2rem;
-  }
-  
-  .product-grid {
-    display: flex;
+
+  .main-nav {
+    margin-top: 4px;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 25px;
+    gap: 8px;
   }
-  
-  .product-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    width: 260px;
-    padding: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
+
+  .products-section {
+    padding: 30px 20px;
   }
-  
-  .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-  }
-  
-  .product-card img {
-    width: 100%;
-    height: 180px;
-    object-fit: contain;
-    margin-bottom: 10px;
-  }
-  
-  .product-card h2 {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 10px;
-    min-height: 50px;
-  }
-  
-  .price {
-    color: #27ae60;
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-  
-  .actions {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .details,
-  .cart {
-    border: none;
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .details {
-    background: white;
-    border: 1px solid #333;
-  }
-  
-  .cart {
-    background: #f1c40f;
-    color: #000;
-  }
-  
-  .details:hover {
-    background: #f0f0f0;
-  }
-  
-  .cart:hover {
-    background: #d4ac0d;
-  }
-  
-  /* ===== LÁBLÉC ===== */
-  .footer {
-    background-color: #27ae60;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
-    font-size: 0.9rem;
-  }
-  
+}

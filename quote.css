@@ -1,0 +1,295 @@
+/* ===== ALAPOK ===== */
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+
+/* ===== FELSŐ FEJLÉC ===== */
+.top-header {
+  background: #008000;
+  color: #fff;
+  text-align: center;
+  padding: 6px 0;
+}
+.contact-info span {
+  margin: 0 12px;
+}
+
+/* ===== FŐ FEJLÉC ===== */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+.logo a {
+  font-size: 1.8rem;
+  color: #008000;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ===== MENÜ + LEGÖRDÜLŐ (Dolgozók) ===== */
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Alap gomb-stílus (linkek + Dolgozók gomb) */
+.main-nav a,
+.main-nav .dropbtn {
+  margin-left: 10px;
+  padding: 8px 14px;
+  text-decoration: none;
+  background: #008000;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+/* Linkek */
+.main-nav a {
+  cursor: pointer;
+}
+
+/* Hover */
+.main-nav a:hover,
+.main-nav .dropbtn:hover {
+  background-color: #006600;
+  transform: translateY(-1px);
+}
+
+/* Logout külön színnel */
+.main-nav .logout-btn {
+  background: #cc0000;
+}
+.main-nav .logout-btn:hover {
+  background: #aa0000;
+}
+
+/* Dropdown konténer */
+.dropdown {
+  position: relative;
+}
+
+/* Lenyíló tartalom */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 6px 0;
+  z-index: 1500;
+}
+
+/* Lenyíló linkek */
+.dropdown-content a {
+  display: block;             
+  width: 100%;
+  margin: 0;                  
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #008000;             
+  text-align: left;
+  border-radius: 0;
+}
+
+/* Aktív elem a lenyílóban */
+.dropdown-content a.active {
+  font-weight: bold;
+  color: #0044aa;
+}
+
+/* Hover a lenyílóban */
+.dropdown-content a:hover {
+  background-color: #f0f0f0;
+  transform: none;
+}
+
+/* Hoverre nyíljon le */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* ===== CÍM ===== */
+main {
+  padding: 20px 40px 80px; /* alul hely a láblécnek */
+}
+
+/* ===== FEJLÉC + ÚJAK SZÁMA ===== */
+.quote-header {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.new-count {
+  display: inline-block;
+  min-width: 20px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: red;
+  color: #fff;
+  text-align: center;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.new-count:empty { display: none; }  /* ha 0, ne látszódjon semmi */
+
+/* ===== LISTA ===== */
+.quote-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Kis bal oldali kártyák, balra zárt szöveggel */
+.quote-item {
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: inline-flex;         /* csak akkora legyen, amekkora kell */
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  border: 1px solid #e6e6e6;
+}
+.quote-item:hover { background: #f7f7f7; }
+.quote-item.unread { font-weight: bold; }
+
+/* checkbox a bal oldalon */
+.quote-check { display: inline-flex; align-items: center; }
+.quote-check input { width: 18px; height: 18px; cursor: pointer; }
+
+.quote-text {
+  display: inline-block;
+  text-align: left;      /* szöveg balra igazítva a dobozon belül */
+}
+
+/* ===== RENDELÉS GOMB ===== */
+.send-btn {
+  margin-top: 14px;
+  padding: 10px 20px;
+  background: #008000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.send-btn:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
+
+/* ===== MODAL ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 18px 20px;
+  width: 600px;
+  max-width: 95vw;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+/* Bezáró X gomb */
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+}
+
+/* Rendelés modal */
+.customer-info-box p { margin: 4px 0; }
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+.order-table th, .order-table td {
+  border: 1px solid #ddd;
+  padding: 6px;
+}
+.order-table select { width: 100%; }
+.order-table input[type="number"] { width: 100%; }
+
+.add-row {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #008000;
+  background: #fff;
+  color: #008000;
+  cursor: pointer;
+}
+.add-row:hover { background: #f2fff2; }
+
+.modal-buttons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.cancel, .ok {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.cancel { background: #777; }
+.ok { background: #008000; }
+
+/* Lábléc legalul */
+footer {
+  background: #008000;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+/* ===== MOBIL NÉZET ===== */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .main-nav {
+    margin-top: 4px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}

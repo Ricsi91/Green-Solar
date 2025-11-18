@@ -43,7 +43,6 @@ body {
   align-items: center;
 }
 
-/* Alap gomb-stílus a menüben (link + dropbtn) */
 .menu a,
 .menu .dropbtn {
   padding: 8px 14px;
@@ -58,24 +57,20 @@ body {
   justify-content: center;
 }
 
-/* Linkek */
 .menu a {
   border: none;
 }
 
-/* Dolgozók gomb (dropbtn) */
 .menu .dropbtn {
   border: none;
   cursor: pointer;
 }
 
-/* Hover állapot */
 .menu a:hover,
 .menu .dropbtn:hover {
   background: #006600;
 }
 
-/* Speciális gombok */
 .menu .logout-btn {
   background: #cc0000;
 }
@@ -83,17 +78,15 @@ body {
   background: #aa0000;
 }
 
-/* Aktív oldal jelölése */
 .menu a.active {
   color: #ffd700;
 }
 
-/* Dropdown konténer */
+/* Dropdown */
 .dropdown {
   position: relative;
 }
 
-/* Lenullázzuk a belső tartalmat, hogy ne törje szét a layoutot */
 .dropdown-content {
   display: none;
   position: absolute;
@@ -107,30 +100,27 @@ body {
   z-index: 1500;
 }
 
-/* A lenyílóban lévő linkek */
 .dropdown-content a {
-  display: block;             
-  width: 100%;
-  margin: 0;                  
-  padding: 8px 14px;
-  background: #ffffff;
-  color: #008000;             
-  text-align: left;
-  border-radius: 0;
-}
+    display: block;             
+    width: 100%;
+    margin: 0;                  
+    padding: 8px 14px;
+    background: #ffffff;
+    color: #008000;             
+    text-align: left;
+    border-radius: 0;
+  }
+  
 
-/* Hover a lenyíló elemeken */
 .dropdown-content a:hover {
   background: #f0f0f0;
 }
 
-/* Aktív elem a lenyílóban */
 .dropdown-content a.active {
   font-weight: bold;
   color: #0044aa;
 }
 
-/* Hoverre lenyílás */
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -154,19 +144,6 @@ main { padding: 20px; flex: 1; }
   flex-direction: column;
   gap: 16px;
 }
-.left-menu button {
-  padding: 10px 12px;
-  background-color: #008000;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-.left-menu button:hover { background-color: #006600; }
-
 .orders-title {
   margin: 0;
   font-size: 1.1rem;
@@ -178,7 +155,7 @@ main { padding: 20px; flex: 1; }
   margin-left: 8px;
 }
 
-/* Rendelések listája – kártyák, balra zártan, csak akkora, amekkora kell */
+/* Rendelések listája – kártyák */
 .orders-box {
   display: flex;
   flex-direction: column;
@@ -203,7 +180,7 @@ main { padding: 20px; flex: 1; }
 .order-status { margin-left: 6px; color: #222; }
 
 /* ==========================
-   JOBB OLDAL – TÁBLÁZAT
+   KÖZÉPSŐ TARTALOM – RÉSZLETEK
 ========================== */
 .content {
   flex: 1;
@@ -211,95 +188,59 @@ main { padding: 20px; flex: 1; }
   padding: 22px;
   border-radius: 8px;
   box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  min-height: 260px;
 }
 .content h2 { margin: 0 0 15px; }
 
-.table-wrapper { width: 800px; margin: 0; } /* balra zárt */
-table { border-collapse: collapse; width: 100%; }
-thead th, tbody td {
-  border: 1px solid #333;
-  padding: 8px 10px;
-  text-align: left;
-  vertical-align: middle;
+.no-selection {
+  font-style: italic;
+  color: #666;
 }
-thead th { background-color: #f4f4f4; }
-tbody tr:hover { background-color: #f9f9f9; }
 
-/* ==========================
-   MODAL
-========================== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.modal-content {
-  background: #ffffff;
-  padding: 20px 22px;
-  border-radius: 8px;
-  width: 320px;
-  max-width: 95vw;
-  box-shadow: 0 0 15px rgba(0,0,0,0.3);
-}
-.modal-content h2 { margin: 0 0 12px; }
-.modal-content label {
-  display: block;
+.details-box {
   margin-top: 8px;
-  margin-bottom: 4px;
-  font-size: 0.95rem;
 }
-.modal-content select,
-.modal-content input {
+
+.customer-box {
+  margin-bottom: 12px;
+}
+.customer-box p {
+  margin: 4px 0;
+}
+
+/* Rendelés termékek táblázat */
+.order-table {
   width: 100%;
-  padding: 6px 8px;
-  margin-bottom: 8px;
-  border-radius: 4px;
-  border: 1px solid #aaa;
+  border-collapse: collapse;
+  margin-top: 6px;
 }
-.modal-buttons {
-  margin-top: 10px;
+.order-table th,
+.order-table td {
+  border: 1px solid #ddd;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+/* Készre jelentés gomb */
+.details-actions {
+  margin-top: 12px;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
 }
-.modal-buttons button {
-  padding: 6px 12px;
+
+.complete-btn {
+  padding: 8px 14px;
   border-radius: 6px;
   border: none;
   cursor: pointer;
-}
-#orderCancel { background: #777; color: #fff; }
-#orderOk { background: #008000; color: #fff; }
-#orderCancel:hover { background: #555; }
-#orderOk:hover { background: #006600; }
-
-/* Modal bezáró X gomb – gomb jellegű */
-.close {
-  cursor: pointer;
+  font-size: 0.95rem;
   font-weight: bold;
-  font-size: 24px;
-  line-height: 1;
-  user-select: none;
-  padding: 2px 8px;
-  border-radius: 4px;
-  align-self: flex-end;
+  background-color: #008000;
+  color: #ffffff;
+  transition: background-color 0.2s;
 }
-.close:hover {
-  background-color: #eee;
-}
-
-/* Részletek modal nagyobb doboz */
-#orderDetailsModal .modal-content {
-  width: 800px;
-}
-.order-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-.order-table th, .order-table td {
-  border: 1px solid #ddd;
-  padding: 6px;
+.complete-btn:hover {
+  background-color: #006600;
 }
 
 /* ==========================

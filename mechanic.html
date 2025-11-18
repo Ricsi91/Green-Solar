@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szerelők – Rendelések</title>
+    <link rel="stylesheet" href="mechanic.css">
+</head>
+
+<body>
+
+    <!-- =========================
+         FELSŐ FEJLÉC RÉSZ
+    ========================= -->
+    <header class="top-header">
+        <div class="contact-info">
+            <span>Email: info@greensolar.hu</span>
+            <span>Telefon: +36 30 123 4567</span>
+        </div>
+    </header>
+
+    <header class="main-header">
+        <div class="logo">
+            <a href="homepage.html">Green Solar</a>
+        </div>
+        <nav class="menu">
+            <a href="homepage.html">Kezdőlap</a>
+            <a href="product.html">Termékek</a>
+            <a href="services.html">Szolgáltatások</a>
+
+            <div class="dropdown" id="dolgozokDropdown">
+                <button class="dropbtn">Dolgozók</button>
+                <div class="dropdown-content">
+                  <a href="index.html">Admin</a>
+                  <a href="quote.html">Árajánlat kezelés</a>
+                  <a href="warehouse.html">Raktár</a>
+                  <a href="mechanic.html">Szerelők</a>
+                </div>
+              </div>
+
+            <a id="logoutBtn" class="logout-btn">Kijelentkezés</a>
+        </nav>
+    </header>
+
+    <!-- =========================
+         OLDAL TARTALOM
+    ========================= -->
+    <main>
+        <div class="layout">
+
+            <!-- BAL OLDAL: ÉRTESÍTÉSEK -->
+            <div class="left-menu">
+                <h3 class="orders-title">
+                    Beszerelés alatt lévő rendelések
+                    <span id="newOrderCount" class="new-order-count"></span>
+                </h3>
+
+                <div class="orders-box" id="ordersList"></div>
+            </div>
+
+            <!-- KÖZÉP: KIVÁLASZTOTT RENDELÉS ADATAI -->
+            <div class="content">
+                <h2>Kiválasztott rendelés</h2>
+
+                <div id="noSelection" class="no-selection">
+                    Válassz egy rendelést a bal oldali listából.
+                </div>
+
+                <div id="detailsBox" class="details-box" style="display:none;">
+                    <div id="customerBox" class="customer-box"></div>
+
+                    <h3>Termékek</h3>
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Termék</th>
+                                <th>Kért mennyiség</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orderItemsBody"></tbody>
+                    </table>
+
+                    <div class="details-actions">
+                        <button id="completeBtn" class="complete-btn">
+                            Készre jelentés
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- =========================
+         LÁBLÉC
+    ========================= -->
+    <footer>
+        © 2025 Green Solar – Minden jog fenntartva
+    </footer>
+
+    <script src="mechanic.js"></script>
+
+    <script src="auth.js"></script>
+</body>
+</html>
+</body>
+</html>

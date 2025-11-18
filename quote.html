@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Árajánlatok kezelése</title>
+    <link rel="stylesheet" href="quote.css">
+</head>
+
+<body>
+
+    <!-- FELSŐ FEJLÉC -->
+    <header class="top-header">
+        <div class="contact-info">
+            <span>Email: info@greensolar.hu</span>
+            <span>Telefon: +36 30 123 4567</span>
+        </div>
+    </header>
+
+    <!-- FŐ FEJLÉC + MENÜ -->
+    <header class="main-header">
+        <div class="logo">
+            <a href="homepage.html">Green Solar</a>
+        </div>
+
+        <nav class="main-nav">
+            <a href="product.html">Termékek</a>
+            <a href="services.html">Szolgáltatások</a>
+            <a href="#contact">Kapcsolat</a>
+
+            <div class="dropdown" id="dolgozokDropdown">
+                <button class="dropbtn">Dolgozók</button>
+                <div class="dropdown-content">
+                  <a href="index.html">Admin</a>
+                  <a href="quote.html">Árajánlat kezelés</a>
+                  <a href="warehouse.html">Raktár</a>
+                  <a href="mechanic.html">Szerelők</a>
+                </div>
+              </div>
+
+            <a id="logoutBtn" class="logout-btn">Kijelentkezés</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Beérkezett árajánlat kérések</h2>
+
+        <!-- Fejléc -->
+        <div class="quote-header">
+            <strong>Árajánlat kérések</strong>
+            <span id="newCount" class="new-count"></span>
+        </div>
+
+        <!-- Árajánlat lista -->
+        <div id="quoteList" class="quote-list"></div>
+
+        <button id="openOrderBtn" class="send-btn" disabled>Továbbítás rendelésre</button>
+    </main>
+
+    <!-- RÉSZLETEZŐ MODAL (kattintás a kártyán) -->
+    <div id="quoteDetailsModal" class="modal">
+        <div class="modal-content">
+            <span id="closeDetails" class="close">&times;</span>
+            <h2>Árajánlat részletei</h2>
+            <div id="quoteDetailsBox"></div>
+        </div>
+    </div>
+
+    <!-- RENDELÉS LEADÁSA MODAL -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+
+            <span id="closeModal" class="close">&times;</span>
+
+            <h2>Rendelés összeállítása</h2>
+
+            <div id="customerInfo" class="customer-info-box"></div>
+
+            <h3>Termékek hozzáadása</h3>
+
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60%">Termék</th>
+                        <th style="width: 20%">Darab</th>
+                        <th style="width: 20%"></th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody"></tbody>
+            </table>
+
+            <button id="addRowBtn" class="add-row">+ Új termék hozzáadása</button>
+
+            <div class="modal-buttons">
+                <button id="cancelOrder" class="cancel">Mégse</button>
+                <button id="sendOrder" class="ok">Küldés</button>
+            </div>
+
+        </div>
+    </div>
+
+    <footer id="contact">
+        © 2025 Green Solar – Minden jog fenntartva
+    </footer>
+
+    <script src="quote.js"></script>
+
+    <script src="auth.js"></script>
+</body>
+</html>
+</body>
+</html>

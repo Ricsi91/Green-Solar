@@ -16,12 +16,23 @@
   <!-- 🔹 Alsó fejléc -->
   <header class="main-header">
     <div class="logo" onclick="window.location.href='homepage.html'">Green Solar</div>
-    <nav class="navbar">
-      <a href="product.html" class="active">Termékek</a>
+
+    <nav class="main-nav">
+      <a href="product.html">Termékek</a>
       <a href="services.html">Szolgáltatások</a>
-      <a href="#">Kapcsolat</a>
-      <a href="warehouse.html" class="active">Raktár</a>
-      <a href="index.html">Admin</a>
+      <a href="#contact">Kapcsolat</a>
+
+      <div class="dropdown" id="dolgozokDropdown">
+        <button class="dropbtn">Dolgozók</button>
+        <div class="dropdown-content">
+          <a href="index.html">Admin</a>
+          <a href="quote.html">Árajánlat kezelés</a>
+          <a href="warehouse.html">Raktár</a>
+          <a href="mechanic.html">Szerelők</a>
+        </div>
+      </div>
+
+      <a id="logoutBtn" class="logout-btn">Kijelentkezés</a>
     </nav>
   </header>
 
@@ -29,58 +40,19 @@
   <main class="products-section">
     <h1>Top termékek</h1>
     <div class="product-grid">
-
-      <!-- 🔸 Termék 1 -->
-      <div class="product-card">
-        <img src="img/product/product1.jpg" alt="Termék 1">
-        <h2>Huawei | LUNA2000-5-E0 akkumulátor egység</h2>
-        <p class="price">746.980 Ft</p>
-        <div class="actions">
-          <button class="details">Részletek</button>
-          <button class="cart">Kosárba</button>
-        </div>
-      </div>
-
-      <!-- 🔸 Termék 2 -->
-      <div class="product-card">
-        <img src="img/product/product2.jpg" alt="Termék 2">
-        <h2>Huawei | 600W-P1 optimalizáló</h2>
-        <p class="price">20.090 Ft</p>
-        <div class="actions">
-          <button class="details">Részletek</button>
-          <button class="cart">Kosárba</button>
-        </div>
-      </div>
-
-      <!-- 🔸 Termék 3 -->
-      <div class="product-card">
-        <img src="img/product/product3.jpg" alt="Termék 3">
-        <h2>Huawei | Napelem inverter szimmetrikus 8kW</h2>
-        <p class="price">402.990 Ft</p>
-        <div class="actions">
-          <button class="details">Részletek</button>
-          <button class="cart">Kosárba</button>
-        </div>
-      </div>
-
-      <!-- 🔸 Termék 4 -->
-      <div class="product-card">
-        <img src="img/product/product4.jpg" alt="Termék 4">
-        <h2>Huawei | Napelem inverter szimmetrikus 5kW</h2>
-        <p class="price">382.990 Ft</p>
-        <div class="actions">
-          <button class="details">Részletek</button>
-          <button class="cart">Kosárba</button>
-        </div>
-      </div>
-
+      <!-- JS tölti be az adatokat -->
     </div>
   </main>
 
   <!-- 🔹 Lábléc -->
-  <footer class="footer">
+  <footer id="contact" class="footer">
     © 2025 Green Solar – Minden jog fenntartva
   </footer>
 
+  <script src="product.js"></script>
+
+  <script src="auth.js"></script>
+</body>
+</html>
 </body>
 </html>

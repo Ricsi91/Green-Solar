@@ -18,12 +18,18 @@ if (empty($_POST['felhasznalonev']) || empty($_POST['jelszo'])) {
 }
 
 $felhasznalo = $_POST['felhasznalonev'];
-$jelszo = $_POST['jelszo'];
+$jelszo      = $_POST['jelszo'];
 
 $conn = db();
 
 $sql = "
-    SELECT f.`ID`, f.`Név`, f.`Felhasználónév`, f.`Jelszó`, j.`Jogosultság`
+    SELECT 
+        f.`ID`, 
+        f.`Név`, 
+        f.`Felhasználónév`, 
+        f.`Jelszó`, 
+        f.`JogosultsagID`,      -- 🔹 EZT HOZZÁTETTÜK
+        j.`Jogosultság`
     FROM `Felhasználók` f
     LEFT JOIN `Jogosultságok` j ON f.`JogosultsagID` = j.`ID`
     WHERE f.`Felhasználónév` = ?
@@ -53,8 +59,19 @@ $stored = $user['Jelszó'];
 
 // Jelszó ellenőrzése
 if (password_verify($jelszo, $stored)) {
-    unset($user['Jelszó']); // ne küldjük vissza a hash-t
-    echo json_encode(["status" => "ok", "user" => $user], JSON_UNESCAPED_UNICODE);
+
+    // 🔹 Ne küldjük vissza a hash-t
+    unset($user['Jelszó']);
+
+    // 🔹 Extra mezők, hogy frontendnek könnyű legyen:
+    // (a régieket NEM törlöm, hogy ne törjön el semmi régi kód)
+    $user['jog_id']  = isset($user['JogosultsagID']) ? (int)$user['JogosultsagID'] : null;
+    $user['jog_nev'] = $user['Jogosultság'] ?? null;
+
+    echo json_encode(
+        ["status" => "ok", "user" => $user],
+        JSON_UNESCAPED_UNICODE
+    );
 } else {
     echo json_encode(["error" => "Hibás felhasználónév vagy jelszó."]);
 }

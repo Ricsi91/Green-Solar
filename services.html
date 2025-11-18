@@ -19,13 +19,24 @@
   <!-- Fejléc logóval és menüvel -->
   <nav class="navbar">
     <div class="logo" onclick="window.location.href='homepage.html'">Green Solar</div>
-    <div class="menu">
+
+    <nav class="main-nav">
       <a href="product.html">Termékek</a>
       <a href="services.html" class="active">Szolgáltatások</a>
       <a href="contact.html">Kapcsolat</a>
-      <a href="index.html">Admin</a>
 
-    </div>
+      <div class="dropdown" id="dolgozokDropdown">
+        <button class="dropbtn">Dolgozók</button>
+        <div class="dropdown-content">
+          <a href="index.html">Admin</a>
+          <a href="quote.html">Árajánlat kezelés</a>
+          <a href="warehouse.html">Raktár</a>
+          <a href="mechanic.html">Szerelők</a>
+        </div>
+      </div>
+
+      <a id="logoutBtn" class="logout-btn">Kijelentkezés</a>
+    </nav>
   </nav>
 
   <!-- Fő tartalom -->
@@ -33,36 +44,93 @@
     <h1>Napelem telepítése</h1>
 
     <div class="services-container">
+
       <div class="service-box">
         <img src="img/services/service1.jpg" alt="Napelem felmérés">
         <h2>Napelem felmérés</h2>
-        <p>Részletes helyszíni felmérést végzünk, hogy a napelem rendszer tökéletesen illeszkedjen az igényekhez és a tetőszerkezethez.</p>
+        <p>Részletes helyszíni felmérés...</p>
       </div>
 
       <div class="service-box">
         <img src="img/services/service2.jpg" alt="Szolgáltatói engedélyeztetés">
         <h2>Szolgáltatói engedélyeztetés</h2>
-        <p>Elintézzük az engedélyeztetési folyamatot a szolgáltatóval, hogy Önnek ne kelljen a papírmunkával bajlódnia.</p>
+        <p>Elintézzük az engedélyeztetést...</p>
       </div>
 
       <div class="service-box">
         <img src="img/services/service3.jpg" alt="Kivitelezés">
         <h2>Kivitelezés</h2>
-        <p>Szakértő csapatunk precízen és gyorsan telepíti a napelemes rendszert a legmodernebb technológiák felhasználásával.</p>
+        <p>Szakértő csapatunk telepíti...</p>
       </div>
 
       <div class="service-box">
         <img src="img/services/service4.gif" alt="Monitorozás" class="animated-gif">
         <h2>Monitorozás</h2>
-        <p>Online felügyeleti rendszerünk segítségével folyamatosan nyomon követheti napelemes rendszere teljesítményét.</p>
+        <p>Online felügyelet...</p>
       </div>
+
     </div>
   </main>
 
-  <!-- Lábléc -->
+  <!-- =========================
+        ÁRAJÁNLAT KÉRÉSE
+  ========================= -->
+  <section class="quote-section">
+    <h2>Árajánlat kérése</h2>
+
+    <!-- FONTOS: nincs action, nincs method -->
+    <form class="quote-form" id="quoteForm">
+
+      <label for="name">Név:</label>
+      <input type="text" id="name" required>
+
+      <label for="address">Cím:</label>
+      <input type="text" id="address" required>
+
+      <label for="phone">Telefonszám:</label>
+      <input type="text" id="phone" required>
+
+      <label for="email">E-mail cím:</label>
+      <input type="email" id="email" required>
+
+      <label for="type">Típusa:</label>
+      <select id="type" required>
+          <option value="">Válasszon...</option>
+          <option value="Családi ház">Családi ház</option>
+          <option value="Társasház">Társasház</option>
+          <option value="Vállalkozás">Vállalkozás</option>
+      </select>
+
+      <label for="consumption">Éves fogyasztás (kWh):</label>
+      <input type="number" id="consumption" min="0" required>
+
+      <label for="placement">Elhelyezés:</label>
+      <select id="placement" required>
+        <option value="">Válasszon...</option>
+        <option value="Tetőre">Tetőre</option>
+        <option value="Garázsra">Garázsra</option>
+        <option value="Udvarra">Udvarra</option>
+        <option value="Földre">Földre (állványra)</option>
+      </select>
+
+      <label for="message">Megjegyzés:</label>
+      <textarea id="message" rows="4"></textarea>
+
+      <button type="submit" class="quote-btn">Küldés</button>
+
+    </form>
+  </section>
+
   <footer>
     <p>© 2025 Green Solar – Minden jog fenntartva</p>
   </footer>
+
+  <!-- JAVASCRIPT -->
+  <script src="services.js"></script>
+
+  <script src="auth.js"></script>
+</body>
+</html>
 
 </body>
 </html>

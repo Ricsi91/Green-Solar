@@ -3,7 +3,7 @@ function db() {
     $servername = "localhost";
     $username   = "root";
     $password   = "";
-    $dbname     = "Proba";
+    $dbname     = "Napelem";
     $socket     = "/Applications/XAMPP/xamppfiles/var/mysql/mysql.sock";
 
     file_put_contents("debug_log.txt", "db() elindult\n", FILE_APPEND);

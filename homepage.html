@@ -21,8 +21,18 @@
       <a href="product.html">Termékek</a>
       <a href="services.html">Szolgáltatások</a>
       <a href="#contact">Kapcsolat</a>
-      <a href="warehouse.html" class="active">Raktár</a>
-      <a href="index.html">Admin</a>
+
+      <div class="dropdown" id="dolgozokDropdown">
+        <button class="dropbtn">Dolgozók</button>
+        <div class="dropdown-content">
+          <a href="index.html">Admin</a>
+          <a href="quote.html">Árajánlat kezelés</a>
+          <a href="warehouse.html">Raktár</a>
+          <a href="mechanic.html">Szerelők</a>
+        </div>
+      </div>
+
+      <a id="logoutBtn" class="logout-btn">Kijelentkezés</a>
     </nav>
   </header>
 
@@ -81,6 +91,10 @@
   <footer id="contact" class="footer">
     © 2025 Green Solar – Minden jog fenntartva
   </footer>
+
+  <script src="auth.js"></script>
+</body>
+</html>
 
 </body>
 </html>

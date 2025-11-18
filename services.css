@@ -1,112 +1,267 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-  }
-  
-  /* Felső zöld sáv */
-  .top-bar {
-    background-color: #007b3d;
-    color: white;
-    text-align: center;
-    padding: 8px 0;
-    font-size: 14px;
-  }
-  
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Felső zöld sáv */
+.top-bar {
+  background-color: #007b3d;
+  color: white;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 14px;
+}
+.contact-info span {
+  margin: 0 12px;
+}
+
+/* Fejléc / navbar */
+.navbar {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #007b3d;
+  cursor: pointer;
+}
+
+/* ===== MENÜ + DOLGOZÓK LENYÍLÓ ===== */
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Alap gomb-stílus (linkek + Dolgozók gomb) */
+.main-nav a,
+.main-nav .dropbtn {
+  margin-left: 20px;
+  text-decoration: none;
+  background-color: #007b3d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: 0.3s;
+  font-size: 0.95rem;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Linkek */
+.main-nav a {
+  cursor: pointer;
+}
+
+/* Dolgozók gomb */
+.main-nav .dropbtn {
+  cursor: pointer;
+}
+
+/* Hover */
+.main-nav a:hover,
+.main-nav .dropbtn:hover {
+  background-color: #005f2a;
+}
+
+/* Aktív menüelem (Szolgáltatások) – kiemelés */
+.main-nav a.active {
+  color: #ffeb3b;
+}
+
+/* Logout gomb külön színnel */
+.main-nav .logout-btn {
+  background-color: #cc0000;
+}
+.main-nav .logout-btn:hover {
+  background-color: #aa0000;
+}
+
+/* Dropdown konténer */
+.dropdown {
+  position: relative;
+}
+
+/* Lenyíló tartalom */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 6px 0;
+  z-index: 1500;
+}
+
+/* Lenyíló linkek – MIND külön sorban, teljes szélességen */
+.dropdown-content a {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 8px 14px;
+  background: #ffffff;
+  color: #007b3d;
+  text-align: left;
+  border-radius: 0;
+}
+
+/* Hover a lenyílóban */
+.dropdown-content a:hover {
+  background-color: #f0f0f0;
+}
+
+/* Hoverre nyíljon le */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Fő tartalom */
+.content {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.content h1 {
+  color: #007b3d;
+  margin-bottom: 40px;
+}
+
+/* Szolgáltatások dobozai */
+.services-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.service-box {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 20px;
+  transition: transform 0.3s;
+}
+
+.service-box:hover {
+  transform: translateY(-5px);
+}
+
+.service-box img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.service-box .animated-gif {
+  object-fit: contain;
+  background-color: #fff;
+}
+
+.service-box h2 {
+  color: #007b3d;
+  margin: 15px 0 10px;
+}
+
+.service-box p {
+  font-size: 14px;
+  color: #333;
+  text-align: justify;
+}
+
+/* Lábléc */
+footer {
+  background-color: #007b3d;
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 40px;
+}
+
+/* ===== ÁRAJÁNLAT KÉRÉS ===== */
+
+.quote-section {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.quote-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 25px;
+  color: #008000;
+}
+
+.quote-form {
+  width: 420px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quote-form label {
+  text-align: left;
+  font-weight: bold;
+}
+
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.quote-btn {
+  background-color: #008000;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+.quote-btn:hover {
+  background-color: #006600;
+}
+
+/* Mobilbarát menü */
+@media (max-width: 768px) {
   .navbar {
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 40px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
   }
-  
-  .logo {
-    font-size: 28px;
-    font-weight: bold;
-    color: #007b3d;
-    cursor: pointer;
-  }
-  
-  .menu a {
-    margin-left: 20px;
-    text-decoration: none;
-    background-color: #007b3d;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 4px;
-    transition: 0.3s;
-  }
-  
-  .menu a:hover {
-    background-color: #005f2a;
-  }
-  
-  .menu a.active {
-    color: #ffeb3b; /* citromsárga */
-  }
-  
-  .content {
-    text-align: center;
-    padding: 50px 20px;
-  }
-  
-  .content h1 {
-    color: #007b3d;
-    margin-bottom: 40px;
-  }
-  
-  /* Szolgáltatások dobozai */
-  .services-container {
-    display: flex;
+
+  .main-nav {
+    margin-top: 4px;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
+    gap: 8px;
   }
-  
-  .service-box {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    width: 250px;
-    padding: 20px;
-    transition: transform 0.3s;
+
+  .quote-form {
+    width: 90%;
   }
-  
-  .service-box:hover {
-    transform: translateY(-5px);
-  }
-  
-  .service-box img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-    border-radius: 6px;
-  }
-  
-  .service-box .animated-gif {
-    object-fit: contain;
-    background-color: #fff;
-  }
-  
-  .service-box h2 {
-    color: #007b3d;
-    margin: 15px 0 10px;
-  }
-  
-  .service-box p {
-    font-size: 14px;
-    color: #333;
-    text-align: justify;
-  }
-  
-  /* Lábléc */
-  footer {
-    background-color: #007b3d;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    margin-top: 40px;
-  }
-  
+}
